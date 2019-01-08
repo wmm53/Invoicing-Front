@@ -1,18 +1,17 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    111111
-    <router-view/>
+<router-view></router-view>
   </div>
 </template>
 
 <script>
+// import api from './apis/api'
+import axios from 'axios'
 export default {
-  name: 'App'
 }
 </script>
 
-<style>
+<style scoped>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
