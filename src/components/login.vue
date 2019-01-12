@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Card style="width:400px" v-if="showRegister">
+    <!-- <Card style="width:400px" v-if="showRegister">
       <p slot="title">
             <Icon type="ios-film-outline"></Icon>
            用户注册
@@ -38,12 +38,18 @@
             <Button type="primary" @click="handleSubmit('formInline')">注册</Button>
         </FormItem>
       </Form>
-    </Card>
+    </Card> -->
     <div  class="loginPanel">
     <Card style="width:400px" v-if="showLogin">
+      <p slot="title">
+            <Icon type="ios-film-outline"></Icon>
+           用户登录
+      </p>
+      <p v-show="showWarning" style="marginLeft:40%">{{warning}}</p>
  <Form  ref="formInline" :model="formInline" :rules="ruleInline" :label-width="85" >
-        <FormItem prop="username" label="姓名">
-            <i-input type="text" v-model="formInline.username" placeholder="username">
+
+        <FormItem prop="username" label="英文名">
+            <i-input type="text" v-model="formInline.username" placeholder="Englishname">
                 <Icon type="ios-person-outline" slot="prepend"></Icon>
             </i-input>
         </FormItem>
@@ -52,28 +58,25 @@
                 <Icon type="ios-lock-outline" slot="prepend"></Icon>
             </i-input>
         </FormItem>
+        <FormItem>
+            <Button  type="primary" @click="login">登录</Button>
+        </FormItem>
        </Form>
-            <Button style=" display:inline" type="primary" @click="login">登录</Button>
 
-
-            <Button style=" display:inline" type="primary">忘记密码</Button>
-
-
-            <Button style=" display:inline" type="primary" @click="chooseRegister">前往注册</Button>
     </Card>
     </div>
   </div>
 </template>
 <script>
-// import {setCookie,getCookie} from '../js/cookie.js'
+ import {setCookie,getCookie} from '../js/cookie.js'
 export default {
-  /*mounted() {
-    /*页面挂载获取cookie，如果存在username的cookie，则跳转到主页，不需登录
-    if(getCookie('username')){
-        this.$router.push('/index')
-    }
+//   mounted() {
+//     //页面挂载获取cookie，如果存在username的cookie，则跳转到主页，不需登录
+//      if(getCookie('username')){
+//         this.$router.push('/index')
+//      }
 
-},*/
+// },
   methods: {
           chooseRegister() {
            this.showRegister = true
@@ -86,24 +89,26 @@ export default {
             }
             /** 接口请求 */
             this.$http.post('http://119.29.33.90:1236/api/v1/staff/login',params,{headers:{},emulateJSON: true}).then((res)=>{
-               console.log(res)
-              if(res.code == -1001){
-                  alert("该用户不存在")
-                  // this.showTishi = true
-              }else if(res.code == -1003){
-                  alert("密码输入错误")
-                  // this.showTishi = true
-              }else{
+              //  console.log(res)
+              //  console.log(res.data.Code)
+              //  console.log(res.data.Data)
+              console.log(res.data.Data.Id)
+
+              if(res.data.Code == 1){
                   // this.tishi = "登录成功"
                   // this.showTishi = true
-                  //setCookie('username',this.formInline.username,1000*60)
-                  //setTimeout(function(){
+                  var id = res.data.Data.Id
+                  var permission = res.data.Data.Permission
+                  setCookie('id',id,1000*60)
+                  setCookie('permission',permission,1000*60)
+                  setCookie('username',this.formInline.username,1000*60)
+                  setTimeout(function(){
                       this.$router.push('/index')
                       alert('登陆成功')
-                  //}.bind(this),1000)
+                  }.bind(this),1000)
               }
             })
-          }
+          },
  },
    data () {
             return {
@@ -116,7 +121,7 @@ export default {
                 },
                 ruleInline: {
                     username: [
-                        { required: true, message: '请输入用户名', trigger: 'blur' }
+                        { required: true, message: '请输入英文名', trigger: 'blur' }
                     ],
                     Englishname: [
                        { required: true, message: '请输入英文名', trigger: 'blur' }
@@ -140,7 +145,9 @@ export default {
                 },
                 showRegister: false,
                 showLogin: true,
-                datevalue: ''
+                showWarning: true,
+                datevalue: '',
+                warning:'ddd'
             }
        }
 
@@ -151,7 +158,7 @@ export default {
   width:600px;
   /* height: 800px; */
   margin:0 auto;
-background: red;
+background:#216f8d;
 }
 .ivu-card.ivu-card-bordered{
    margin:100px auto;

@@ -1,47 +1,58 @@
 <template>
       <div class="layout">
         <Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
-            <Menu active-name="1-2" theme="dark" width="auto" :open-names="['1']">
+            <Menu active-name="1-1" theme="dark" width="auto" @on-select="onMenuSelect">
                 <Submenu name="1">
                     <template slot="title">
                         <Icon type="ios-navigate"></Icon>
-                        Item 1
+                        员工管理
                     </template>
-                    <MenuItem name="1-1">Option 1</MenuItem>
-                    <MenuItem name="1-2">Option 2</MenuItem>
-                    <MenuItem name="1-3">Option 3</MenuItem>
+                    <MenuItem name="1-1">权限查询</MenuItem>
+                    <MenuItem name="1-2">权限修改</MenuItem>
+                    <MenuItem name="1-3">创建用户</MenuItem>
                 </Submenu>
                 <Submenu name="2">
                     <template slot="title">
                         <Icon type="ios-keypad"></Icon>
-                        Item 2
+                        零件采购入库
                     </template>
-                    <MenuItem name="2-1">Option 1</MenuItem>
-                    <MenuItem name="2-2">Option 2</MenuItem>
+                    <MenuItem name="2-1">采购单</MenuItem>
+                    <MenuItem name="2-2">入库单</MenuItem>
                 </Submenu>
                 <Submenu name="3">
                     <template slot="title">
                         <Icon type="ios-analytics"></Icon>
-                        Item 3
+                        零件生产销售
                     </template>
-                    <MenuItem name="3-1">Option 1</MenuItem>
-                    <MenuItem name="3-2">Option 2</MenuItem>
+                    <MenuItem name="3-1">出库单</MenuItem>
+                    <MenuItem name="3-2">投产单</MenuItem>
+                    <MenuItem name="3-3">质检单</MenuItem>
+                    <MenuItem name="3-4">销毁/报废单</MenuItem>
+                    <MenuItem name="3-5">产成单</MenuItem>
+                    <MenuItem name="3-6">销售单</MenuItem>
                 </Submenu>
             </Menu>
         </Sider>
         <Layout :style="{marginLeft: '200px'}">
             <Header :style="{background: '#fff', boxShadow: '0 2px 3px 2px rgba(0,0,0,.1)'}">
-              <h1 :style="{marginLeft:'300px'}">ERP经销商仓库订单管理系统</h1>
+              <h2 :style="{float:'left'}">ERP经销商仓库订单管理系统</h2>
+              <div :style="{float:'right'}">
+                <p>{{username}}，欢迎使用系统</p>
+                <a href="#" @click="quit" :style="{position:'absolute',top:'24px'}">注销登录</a>
+              </div>
+
             </Header>
             <Content :style="{padding: '0 16px 16px'}">
                 <Breadcrumb :style="{margin: '16px 0'}">
-                    <BreadcrumbItem>Home</BreadcrumbItem>
-                    <BreadcrumbItem>Components</BreadcrumbItem>
-                    <BreadcrumbItem>Layout</BreadcrumbItem>
+                    <BreadcrumbItem>首页</BreadcrumbItem>
+                    <BreadcrumbItem>员工</BreadcrumbItem>
+                    <BreadcrumbItem>入库</BreadcrumbItem>
+                    <BreadcrumbItem>出库</BreadcrumbItem>
+
                 </Breadcrumb>
                 <Card>
                     <div style="height: 600px">
-                      Content
+                    <router-view name="2-1">fff</router-view>
                       </div>
                 </Card>
             </Content>
@@ -50,7 +61,35 @@
 </template>
 
 <script>
+ import {setCookie,getCookie, delCookie} from '../js/cookie.js'
+import { log } from 'util';
 export default {
+  data() {
+    return {
+      username: ''
+    }
+  },
+  mounted(){
+            /*页面挂载获取保存的cookie值，渲染到页面上*/
+            let uname = getCookie('username')
+            this.username = uname
+            /*如果cookie不存在，则跳转到登录页*/
+            if(uname == ""){
+                this.$router.push('/')
+            }
+            let id = getCookie('id')
+            console.log(id)
+        },
+        methods:{
+          quit() {
+            delCookie('username')
+            this.$router.push('/')
+          },
+          onMenuSelect(name){
+            // this.$router.push(name)
+          }
+
+        }
 }
 </script>
 
