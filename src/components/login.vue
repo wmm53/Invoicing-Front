@@ -45,7 +45,7 @@
             <Icon type="ios-film-outline"></Icon>
            用户登录
       </p>
-      <p v-show="showWarning" style="marginLeft:40%">{{warning}}</p>
+      <p v-show="showWarning" :style="{marginLeft:'40%',color:'red'}">{{warning}}</p>
  <Form  ref="formInline" :model="formInline" :rules="ruleInline" :label-width="85" >
 
         <FormItem prop="username" label="英文名">
@@ -68,15 +68,11 @@
   </div>
 </template>
 <script>
- import {setCookie,getCookie} from '../js/cookie.js'
+import {setCookie,getCookie} from '../js/cookie.js'
 export default {
-//   mounted() {
-//     //页面挂载获取cookie，如果存在username的cookie，则跳转到主页，不需登录
-//      if(getCookie('username')){
-//         this.$router.push('/index')
-//      }
+   mounted() {
 
-// },
+},
   methods: {
           chooseRegister() {
            this.showRegister = true
@@ -88,24 +84,32 @@ export default {
               'password':this.formInline.password
             }
             /** 接口请求 */
-            this.$http.post('http://119.29.33.90:1236/api/v1/staff/login',params,{headers:{},emulateJSON: true}).then((res)=>{
+              this.$http.post('http://119.29.33.90:1236/api/v1/staff/login',params,{headers:{},emulateJSON: true})
+              .then((res)=>{
               //  console.log(res)
               //  console.log(res.data.Code)
               //  console.log(res.data.Data)
-              console.log(res.data.Data.Id)
+              // console.log(res.data.Data.Id)
 
               if(res.data.Code == 1){
-                  // this.tishi = "登录成功"
-                  // this.showTishi = true
                   var id = res.data.Data.Id
                   var permission = res.data.Data.Permission
-                  setCookie('id',id,1000*60)
-                  setCookie('permission',permission,1000*60)
-                  setCookie('username',this.formInline.username,1000*60)
+                  var user = res.data.Data.Name
+                  setCookie('iffghfj336u7dd',id,1000*60)
+                  setCookie('pwe25446rtgdsn',permission,1000*60)
+                  setCookie('name',user,1000*60)
                   setTimeout(function(){
                       this.$router.push('/index')
-                      alert('登陆成功')
-                  }.bind(this),1000)
+                      // alert('登陆成功')
+                  }.bind(this),100)
+              }else if(res.data.Code == -1001){
+                this.showWarning = true
+                this.warning = '用户名不存在！'
+              }
+              else if(res.data.Code == -1003){
+                this.showWarning = true
+                this.warning = '密码错误！'
+
               }
             })
           },
@@ -147,7 +151,7 @@ export default {
                 showLogin: true,
                 showWarning: true,
                 datevalue: '',
-                warning:'ddd'
+                warning:''
             }
        }
 

@@ -7,29 +7,68 @@
                         <Icon type="ios-navigate"></Icon>
                         员工管理
                     </template>
-                    <MenuItem name="1-1">权限查询</MenuItem>
-                    <MenuItem name="1-2">权限修改</MenuItem>
-                    <MenuItem name="1-3">创建用户</MenuItem>
+                    <MenuItem name="1">权限查询</MenuItem>
+                    <MenuItem name="2">权限修改</MenuItem>
+                    <MenuItem name="3">创建用户</MenuItem>
                 </Submenu>
                 <Submenu name="2">
                     <template slot="title">
                         <Icon type="ios-keypad"></Icon>
-                        零件采购入库
+                        零件管理
+                    </template>
+                    <MenuItem name="4">添加零件</MenuItem>
+                    <MenuItem name="5">查看零件</MenuItem>
+                </Submenu>
+                <Submenu name="3">
+                    <template slot="title">
+                        <Icon type="ios-keypad"></Icon>
+                        总单管理
                     </template>
                     <MenuItem name="2-1">采购单</MenuItem>
                     <MenuItem name="2-2">入库单</MenuItem>
                 </Submenu>
-                <Submenu name="3">
+                <Submenu name="4">
+                    <template slot="title">
+                        <Icon type="ios-keypad"></Icon>
+                        仓库管理
+                    </template>
+                    <MenuItem name="3-1">查看仓库</MenuItem>
+                    <MenuItem name="3-2">更改仓库</MenuItem>
+                </Submenu>
+                <Submenu name="5">
+                    <template slot="title">
+                        <Icon type="ios-keypad"></Icon>
+                        入库单管理
+                    </template>
+                    <MenuItem name="3-1">查看仓库</MenuItem>
+                    <MenuItem name="3-2">更改仓库</MenuItem>
+                </Submenu>
+                <Submenu name="6">
+                    <template slot="title">
+                        <Icon type="ios-keypad"></Icon>
+                        出库单管理
+                    </template>
+                    <MenuItem name="3-1">查看仓库</MenuItem>
+                    <MenuItem name="3-2">更改仓库</MenuItem>
+                </Submenu>
+                <Submenu name="7">
                     <template slot="title">
                         <Icon type="ios-analytics"></Icon>
-                        零件生产销售
+                        流水线管理
                     </template>
-                    <MenuItem name="3-1">出库单</MenuItem>
+                    <MenuItem name="3-1">采购单</MenuItem>
                     <MenuItem name="3-2">投产单</MenuItem>
                     <MenuItem name="3-3">质检单</MenuItem>
-                    <MenuItem name="3-4">销毁/报废单</MenuItem>
+                    <MenuItem name="3-4">销毁单</MenuItem>
                     <MenuItem name="3-5">产成单</MenuItem>
                     <MenuItem name="3-6">销售单</MenuItem>
+                </Submenu>
+                <Submenu name="8">
+                    <template slot="title">
+                        <Icon type="ios-keypad"></Icon>
+                        日志管理
+                    </template>
+                    <MenuItem name="3-1">查看日志</MenuItem>
                 </Submenu>
             </Menu>
         </Sider>
@@ -45,14 +84,13 @@
             <Content :style="{padding: '0 16px 16px'}">
                 <Breadcrumb :style="{margin: '16px 0'}">
                     <BreadcrumbItem>首页</BreadcrumbItem>
-                    <BreadcrumbItem>员工</BreadcrumbItem>
-                    <BreadcrumbItem>入库</BreadcrumbItem>
-                    <BreadcrumbItem>出库</BreadcrumbItem>
-
+                    <BreadcrumbItem>切换</BreadcrumbItem>
                 </Breadcrumb>
                 <Card>
                     <div style="height: 600px">
-                    <router-view name="2-1">fff</router-view>
+                    <keep-alive>
+                   <component :is="currentDetail" v-bind:userPermission="permission" v-bind:userId="id"></component>
+                   </keep-alive>
                       </div>
                 </Card>
             </Content>
@@ -61,35 +99,53 @@
 </template>
 
 <script>
- import {setCookie,getCookie, delCookie} from '../js/cookie.js'
+import {setCookie,getCookie, delCookie} from '../js/cookie.js'
 import { log } from 'util';
+import { defaultCipherList } from 'constants';
 export default {
   data() {
     return {
-      username: ''
+      username: '',
+      id: '',
+      permission: '',
+      index: 0,
+      array:[
+        'introduction','permission-query','permission-change','create-user','component-manage','component-check'
+      ]
     }
   },
+  computed:{
+    currentDetail(){
+      return this.array[this.index]
+    }
+
+  },
   mounted(){
-            /*页面挂载获取保存的cookie值，渲染到页面上*/
-            let uname = getCookie('username')
+            /*页面挂载获取保存的username值，渲染到页面上*/
+            let uname = getCookie('name')
             this.username = uname
             /*如果cookie不存在，则跳转到登录页*/
             if(uname == ""){
                 this.$router.push('/')
             }
-            let id = getCookie('id')
-            console.log(id)
+            this.id = getCookie('iffghfj336u7dd')
+            this.permission = getCookie('pwe25446rtgdsn')
+            //var id =  window.sessionStorage.getItem('gh:de12905e3ti5gtgi')
+            //var permission = window.sessionStorage.getItem('psfe345ygbsdfvhl')
+
         },
         methods:{
           quit() {
-            delCookie('username')
+             delCookie('name')
+             delCookie('iffghfj336u7dd')
+             delCookie('pwe25446rtgdsn')
             this.$router.push('/')
+
           },
           onMenuSelect(name){
-            // this.$router.push(name)
-          }
-
+            this.index = name
         }
+     }
 }
 </script>
 
