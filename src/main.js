@@ -10,17 +10,25 @@ import 'iview/dist/styles/iview.css'
 import VueResource from 'vue-resource'
 import global from './components/global.vue'
 import introduction from './components/detail/introduction.vue'
-import permissionQuery from './components/permission/permissionQuery.vue'
+import permissionManage from './components/permission/permissionManage.vue'
 import permissionChange from './components/permission/permissionChange.vue'
-import createUser from './components/permission/createUser.vue'
-import componentManage from './components/component/componentManage.vue'
+import userManage from './components/permission/userManage.vue'
+import componentAdd from './components/component/componentAdd.vue'
 import componentCheck from './components/component/componentCheck.vue'
-Vue.component('permission-query', permissionQuery)
+import createInPaper from './components/inOutOrder/createInPaper.vue'
+import manageInPaper from './components/inOutOrder/manageInpaper.vue'
+import manageOutPaper from './components/inOutOrder/manageOutpaper.vue'
+import allOrder from './components/allOrder/allOrder.vue'
+Vue.component('permission-manage', permissionManage)
 Vue.component('permission-change', permissionChange)
-Vue.component('create-user', createUser)
+Vue.component('user-manage', userManage)
 Vue.component('introduction', introduction)
-Vue.component('component-manage', componentManage)
+Vue.component('component-add', componentAdd)
 Vue.component('component-check', componentCheck)
+Vue.component('create-inpaper', createInPaper)
+Vue.component('manage-inpaper', manageInPaper)
+Vue.component('manage-outpaper', manageOutPaper)
+Vue.component('all-order', allOrder)
 Vue.prototype.global = global
 Vue.use(VueResource)
 Vue.config.productionTip = false

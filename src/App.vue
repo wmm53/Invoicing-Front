@@ -1,12 +1,13 @@
 <template>
   <div id="app">
 <router-view></router-view>
+
   </div>
 </template>
 
 <script>
 // import api from './apis/api'
-import axios from 'axios'
+//import axios from 'axios'
 export default {
 }
 </script>
@@ -17,4 +18,5 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
 </style>

@@ -7,27 +7,42 @@
                         <Icon type="ios-navigate"></Icon>
                         员工管理
                     </template>
-                    <MenuItem name="1">权限查询</MenuItem>
-                    <MenuItem name="2">权限修改</MenuItem>
-                    <MenuItem name="3">创建用户</MenuItem>
+                    <!-- <MenuItem name="1">权限管理</MenuItem> -->
+                    <MenuItem name="1">用户管理</MenuItem>
                 </Submenu>
                 <Submenu name="2">
                     <template slot="title">
                         <Icon type="ios-keypad"></Icon>
                         零件管理
                     </template>
-                    <MenuItem name="4">添加零件</MenuItem>
-                    <MenuItem name="5">查看零件</MenuItem>
+                    <!-- <MenuItem name="3">添加零件</MenuItem> -->
+                    <MenuItem name="2">查看零件</MenuItem>
                 </Submenu>
                 <Submenu name="3">
                     <template slot="title">
                         <Icon type="ios-keypad"></Icon>
-                        总单管理
+                       入库单管理
                     </template>
-                    <MenuItem name="2-1">采购单</MenuItem>
-                    <MenuItem name="2-2">入库单</MenuItem>
+                    <MenuItem name="3">入库单</MenuItem>
+                    <!-- <MenuItem name="6">操作入库单</MenuItem> -->
                 </Submenu>
                 <Submenu name="4">
+                    <template slot="title">
+                        <Icon type="ios-keypad"></Icon>
+                        出库单管理
+                    </template>
+                    <MenuItem name="4">出库单</MenuItem>
+                    <!-- <MenuItem name="8">更改仓库</MenuItem> -->
+                </Submenu>
+                <Submenu name="5">
+                    <template slot="title">
+                        <Icon type="ios-keypad"></Icon>
+                       总单管理
+                    </template>
+                    <MenuItem name="5">所有单类</MenuItem>
+                    <!-- <MenuItem name="10">更改仓库</MenuItem> -->
+                </Submenu>
+                <Submenu name="6">
                     <template slot="title">
                         <Icon type="ios-keypad"></Icon>
                         仓库管理
@@ -35,25 +50,9 @@
                     <MenuItem name="3-1">查看仓库</MenuItem>
                     <MenuItem name="3-2">更改仓库</MenuItem>
                 </Submenu>
-                <Submenu name="5">
-                    <template slot="title">
-                        <Icon type="ios-keypad"></Icon>
-                        入库单管理
-                    </template>
-                    <MenuItem name="3-1">查看仓库</MenuItem>
-                    <MenuItem name="3-2">更改仓库</MenuItem>
-                </Submenu>
-                <Submenu name="6">
-                    <template slot="title">
-                        <Icon type="ios-keypad"></Icon>
-                        出库单管理
-                    </template>
-                    <MenuItem name="3-1">查看仓库</MenuItem>
-                    <MenuItem name="3-2">更改仓库</MenuItem>
-                </Submenu>
                 <Submenu name="7">
                     <template slot="title">
-                        <Icon type="ios-analytics"></Icon>
+                        <Icon type="ios-keypad"></Icon>
                         流水线管理
                     </template>
                     <MenuItem name="3-1">采购单</MenuItem>
@@ -78,6 +77,10 @@
               <div :style="{float:'right'}">
                 <p>{{username}}，欢迎使用系统</p>
                 <a href="#" @click="quit" :style="{position:'absolute',top:'24px'}">注销登录</a>
+                <a href="#" @click="changePassword = true" :style="{float: 'right',marginTop:'-40px'}">修改密码</a>
+                <Modal v-model="changePassword"  title="Common Modal dialog box title" @on-ok="ok" @on-cancel="cancel">
+                  <i-input v-model="newPassword"></i-input>
+                </Modal>
               </div>
 
             </Header>
@@ -110,8 +113,10 @@ export default {
       permission: '',
       index: 0,
       array:[
-        'introduction','permission-query','permission-change','create-user','component-manage','component-check'
-      ]
+        'introduction','user-manage','component-check','create-inpaper','manage-outpaper','all-order'
+      ],
+      changePassword: false,
+      newPassword: ''
     }
   },
   computed:{
@@ -135,6 +140,21 @@ export default {
 
         },
         methods:{
+          ok() {
+            let param = {
+              'id': this.id,
+              'password': this.newPassword
+            }
+            this.$http.post('http://119.29.33.90:1236/api/v1/staff/update/password', param, {emulateJSON: true}).
+            then((res)=>{
+              if(res.data.Code == 1){
+                this.$Message.success("修改密码成功！")
+              }
+            })
+          },
+          cancel () {
+
+          },
           quit() {
              delCookie('name')
              delCookie('iffghfj336u7dd')

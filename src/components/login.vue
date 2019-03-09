@@ -1,70 +1,33 @@
 <template>
   <div>
-    <!-- <Card style="width:400px" v-if="showRegister">
-      <p slot="title">
-            <Icon type="ios-film-outline"></Icon>
-           用户注册
-      </p>
-      <Form  ref="formInline" :model="formInline" :rules="ruleInline" :label-width="80" >
-        <FormItem prop="username" label="姓名">
-            <i-input type="text" v-model="formInline.username" placeholder="username">
-                <Icon type="ios-person-outline" slot="prepend"></Icon>
-            </i-input>
-        </FormItem>
-        <FormItem prop="Englishname" label="英文名">
-            <i-input type="text" v-model="formInline.Englishname" placeholder="Englishname">
-                <Icon type="ios-person-outline" slot="prepend"></Icon>
-            </i-input>
-        </FormItem>
-        <FormItem prop="telephone" label="电话号码">
-            <i-input type="text" v-model="formInline.telephone" placeholder="telephone">
-                <Icon type="ios-lock-outline" slot="prepend"></Icon>
-            </i-input>
-        </FormItem>
-        <FormItem prop="birthday" label="出生日期">
-            <DatePicker type="datetime" :value='datevalue' placeholder="1996-12-02 00:00:00" style="width: 286px"></DatePicker>
-        </FormItem>
-        <FormItem prop="id" label="身份证">
-            <i-input type="text" v-model="formInline.id" placeholder="id">
-                <Icon type="ios-lock-outline" slot="prepend"></Icon>
-            </i-input>
-        </FormItem>
-         <FormItem prop="password" label="密码">
-            <i-input type="password" v-model="formInline.password" placeholder="password">
-                <Icon type="ios-lock-outline" slot="prepend"></Icon>
-            </i-input>
-        </FormItem>
-        <FormItem>
-            <Button type="primary" @click="handleSubmit('formInline')">注册</Button>
-        </FormItem>
-      </Form>
-    </Card> -->
-    <div  class="loginPanel">
-    <Card style="width:400px" v-if="showLogin">
+    <div  class="loginPanel" style="height: 100vh">
+        <!-- style="width:400px" -->
+    <Card  v-if="showLogin">
       <p slot="title">
             <Icon type="ios-film-outline"></Icon>
            用户登录
       </p>
       <p v-show="showWarning" :style="{marginLeft:'40%',color:'red'}">{{warning}}</p>
- <Form  ref="formInline" :model="formInline" :rules="ruleInline" :label-width="85" >
-
+ <Form  ref="formInline" :model="formInline" :rules="ruleInline" label-position="left" :label-width="85" >
         <FormItem prop="username" label="英文名">
             <i-input type="text" v-model="formInline.username" placeholder="Englishname">
                 <Icon type="ios-person-outline" slot="prepend"></Icon>
             </i-input>
         </FormItem>
-        <FormItem prop="password" label="密码">
+        <FormItem prop="password" label="密码 ">
             <i-input type="password" v-model="formInline.password" placeholder="password">
                 <Icon type="ios-lock-outline" slot="prepend"></Icon>
             </i-input>
         </FormItem>
         <FormItem>
-            <Button  type="primary" @click="login">登录</Button>
+            <Button  type="primary" @click="login" style="marginLeft: 40%">登录</Button>
         </FormItem>
        </Form>
-
     </Card>
     </div>
+    <div class="copyright">
+  <p> copy @ 2018-2019 ahnu 2015级计信学院 </p>
+</div>
   </div>
 </template>
 <script>
@@ -86,10 +49,6 @@ export default {
             /** 接口请求 */
               this.$http.post('http://119.29.33.90:1236/api/v1/staff/login',params,{headers:{},emulateJSON: true})
               .then((res)=>{
-              //  console.log(res)
-              //  console.log(res.data.Code)
-              //  console.log(res.data.Data)
-              // console.log(res.data.Data.Id)
 
               if(res.data.Code == 1){
                   var id = res.data.Data.Id
@@ -110,7 +69,11 @@ export default {
                 this.showWarning = true
                 this.warning = '密码错误！'
 
-              }
+               }
+            }).catch((res)=>{
+              // console.log("res.data.Msg")
+
+                this.warning = '请确保您的网络正常！'
             })
           },
  },
@@ -159,13 +122,23 @@ export default {
 </script>
 <style scoped>
 .loginPanel{
-  width:600px;
-  /* height: 800px; */
-  margin:0 auto;
-background:#216f8d;
+  width: 100%;
+  background:#216f8d;
+  position: relative;
 }
 .ivu-card.ivu-card-bordered{
-   margin:100px auto;
+
+  position: absolute;
+  left: 30%;
+  top: 20%;
+  width: 40%;
+}
+.copyright{
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background-color: #ccc;
+  text-align: center
 }
 </style>
 
